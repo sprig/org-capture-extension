@@ -15,10 +15,14 @@ Detailed instructions available at [Org-Mode site]. The gist of it is to make em
 #### Set up handlers in emacs
 
 If some text is selected before the button is clicked, then the following is sent to emacs:
-```org-protocol://capture:/p/<url>/<title>/selection>```
+```
+org-protocol://capture:/p/<url>/<title>/selection>
+```
 
 If nothing is selected, then instead the following is sent:
-```org-protocol://capture:/L/<url>/<title>```
+```
+org-protocol://capture:/L/<url>/<title>
+```
 
 This means that you need to have appropriate capture templates for "L" and for "p". Example templates below:
 
