@@ -37,6 +37,10 @@ This means that you need to have appropriate capture templates for "L" and for "
 
 _Hint:_ You can put code in capture handlers via %() blocks. I use this mechanism to automatically close the newly crated frame in the L template. If anyone cares to know, I'll add the details.
 
+# Improvements
+
+This extension has room for improvement; Specifically, people would probably like to choose template letters other than the ones I picked for them. If you wish to add a small "options" page with an ability to select handler letters, that would be cool.
+
 # License
 This repository is licensed as MIT license, see the LICENSE file for details.
 
