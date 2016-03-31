@@ -46,25 +46,27 @@ update-desktop-database ~/.local/share/applications/
 Start Applescript Editor. Paste the following snippet:
 
 ``` applescript
-set emacsclient to "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/emacsclient -n -c -a \"/Applications/Emacs.app/Contents/MacOS/Emacs\""
+on emacsclient(input)
+	do shell script "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/emacsclient -n -c -a \"/Applications/Emacs.app/Contents/MacOS/Emacs\" '" & input & "'"
+end emacsclient
 
 on open location input
-	do shell script  emacsclient & "\"" & input & "\""
+	emacsclient(input)
 end open location
 
 on open inputs
 	repeat with raw_input in inputs
 		set input to POSIX path of raw_input
-		do shell script emacsclient & "\"" & input & "\""
+		emacsclient(input)
 	end repeat
 end open
 
 on run
-	do shell script emacsclient
+	do shell script emacsclient("")
 end run
 ```
 
-And save it (with 'type' as Application) under ```/Applications/EmacsClient.app``` (or whatever else you choose).
+Adjust the paths and save it (with 'type' as Application) under ```/Applications/EmacsClient.app``` (or whatever else you choose).
 Edit (with Xcode) the file ```/Applications/Emacsclient.app/Contents/Info.plist```
 
 And add there the following:
