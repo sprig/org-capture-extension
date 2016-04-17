@@ -6,11 +6,11 @@ var capture = function(){
     var uri = 'org-protocol://';
     if (selection != "")
     {
-	uri += 'capture:/p/';
+	uri += 'capture://p/';
     }
     else
     {
-	uri += 'capture:/L/'
+	uri += 'capture://L/'
     };
 
     uri += encodeURIComponent(location.href) + '/' +
