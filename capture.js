@@ -14,14 +14,13 @@ var capture = function(){
     };
 
     uri += encodeURIComponent(location.href) + '/' +
-	encodeURIComponent(document.title);
+	encodeURIComponent(document.title) ;
 
-    if (selection != "") { uri += '/' +	esc(selection); };
-
+    if (selection != "") { uri += '/' + esc(selection); };
 
     console.log("Capturing the following URI with org-protocol:", uri);
 
-    return uri;
+    location.href=uri;
 };
 
 capture();
