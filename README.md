@@ -41,6 +41,11 @@ And then (for non-KDE)
 update-desktop-database ~/.local/share/applications/
 ```
 
+or for KDE
+``` bash
+kbuildsycoca4
+```
+
 #### Under OSX
 
 Start Applescript Editor. Paste the following snippet:
