@@ -14,7 +14,7 @@ var capture = function(){
     };
 
     uri += encodeURIComponent(location.href) + '/' +
-	encodeURIComponent(document.title) ;
+	esc(document.title) ;
 
     if (selection != "") { uri += '/' + esc(selection); };
 
