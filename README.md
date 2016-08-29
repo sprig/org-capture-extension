@@ -141,6 +141,36 @@ This means that you need to have appropriate capture templates for "L" and for "
 
 _Hint:_ You can put code in capture handlers via %() blocks. I use this mechanism to automatically close the newly crated frame in the L template. If anyone cares to know, I'll add the details.
 
+#### Example: closins the frame after a capture
+
+If you wish to automatically close the emacs frame after a capture, add the following template:
+
+```lisp
+("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+ "* %? [[%:link][%:description]] %(progn (setq kk/delete-frame-after-capture 2) \"\")\nCaptured On: %U"
+ :empty-lines 1)
+```
+
+and in the initialization of org-mode put:
+
+```lisp
+  ;; Kill the frame if one was created for the capture
+  (defvar kk/delete-frame-after-capture 0 "Whether to delete the last frame after the current capture")
+
+  (defun kk/delete-frame-if-neccessary (&rest r)
+    (cond
+     ((= kk/delete-frame-after-capture 0) nil)
+     ((> kk/delete-frame-after-capture 1)
+      (setq kk/delete-frame-after-capture (- kk/delete-frame-after-capture 1)))
+     (t
+      (setq kk/delete-frame-after-capture 0)
+      (delete-frame))))
+
+  (advice-add 'org-capture-finalize :after 'kk/delete-frame-if-neccessary)
+  (advice-add 'org-capture-kill :after 'kk/delete-frame-if-neccessary)
+  (advice-add 'org-capture-refile :after 'kk/delete-frame-if-neccessary)
+```
+
 # License
 This repository is licensed as MIT license, see the LICENSE file for details.
 
