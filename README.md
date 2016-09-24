@@ -114,7 +114,15 @@ and restart the desktop. You can also download [EmacsClient.app.zip], which I pr
 
 #### Under Windows
 
-See instructions on [Org-Mode site], and contribute them here with a pull request :-).
+Open the Registry Editor (Win-R, then type `regedit`). Within `HKEY_CLASSES_ROOT`, add a key called `org-protocol`. Within `org-protocol`, set the data for the string value with the name `(Default)`  to be `URL:org-protocol`, add another string value with name `URL Protocol` and no data, and add a key called `shell`.
+
+Within `shell`, create a key called `open`.
+
+Within `open`, create a key called `command`.
+
+Within `command`, set the data for the string value with the name `(Default)` to `"C:\the\path\to\your\emacsclientw.exe" "%1"`, updating the path to point to your Emacs installation.
+
+If you get stuck, see [this guide to registering a protocol handler](https://msdn.microsoft.com/en-us/library/aa767914\(v=vs.85\).aspx) and look at how registries are set up for other protocol handlers (`skype`, `ftp`, etc.). Most of your pre-existing protocol handlers have more config than you need.
 
 ### Set up handlers in emacs
 
