@@ -6,6 +6,8 @@ This is an extension for Google Chrome (tm) which adds a "Capture" button, sendi
 
 This extension has room for improvement; Specifically, people would probably like to choose template letters other than the ones I picked for them. If you wish to add a small "options" page with an ability to select handler letters, that would be cool.
 
+# Problems? Please [click here](#troubleshooting) or scroll to the bottom.
+
 # Detailed setup instructions
 
 ## Install the extension
@@ -178,6 +180,38 @@ and in the initialization of org-mode put:
   (advice-add 'org-capture-kill :after 'kk/delete-frame-if-neccessary)
   (advice-add 'org-capture-refile :after 'kk/delete-frame-if-neccessary)
 ```
+
+# Troubleshooting
+
+Is the extension not working as you expect? i.e., is it "broken"? You need to do some investigative
+legwork. And if you open a ticket, provide enough information to help solve the problem!
+
+Please describe your setup. Linux? Version. OSX? Version. Emacs? Version. org-mode? Version. Chrome? Version. How did
+you get your system to send org-protocol links to emacs? Please provide the relevant capture templates.
+
+Please find the simplest URL for which it fails (does it work on a simple address that contain only
+alphanumeric characters and periods? and backslashes? and query parameters? and escaped characters?
+etc.). Then open the developer console and look for the debug message that the extension gives and
+add it to the ticket.
+
+Open a terminal and run $open "COPIED-URL" (do not skip the quotes, unless what you are pasting
+already has quotes around it). $open is simply open if you are on OSX and xdg-open if on
+linux. COPIED-URL is obviously the url you pasted here in step 1. Does it work? Congrats, you found
+where the problem is not (i.e. inside chrome). No? Does $open org-"protocol://capture:/p/a/b" work?
+No? Again you found where the problem lies not. Otherwise proceed to step 3.
+
+Call up the line you ran in the terminal with the non-working url. it will be of the form open
+"org-protocol://capture:/<letter>/PIECE1/PIECE2/ with PIECE2 usually being longer and more complex
+if you selected any text, and PIECE1 otherwise. Please edit the url until it is as short as possible
+while still breaking (Note, % should always be proceeded by two digits/letters in the ranges 0-9 and
+A-F so do not leave a percent sign with a single symbol following). You can probably trim one of the
+pieces to be just one character. Add to the ticket the smallest breaking URL.
+
+Try sending said URL directly to emacsclient, for good measure. Does it work? Again, congrats. If
+you are using OSX, make sure that the emacsclient which you call is the correct one!
+
+## P.S.
+It is of course fine to ask for help with problems in your config as well.
 
 # License
 This repository is licensed as MIT license, see the LICENSE file for details.
