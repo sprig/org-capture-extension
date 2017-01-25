@@ -210,7 +210,7 @@ pieces to be just one character. Add to the ticket the smallest breaking URL.
 Try sending said URL directly to emacsclient, for good measure. Does it work? Again, congrats. If
 you are using OSX, make sure that the emacsclient which you call is the correct one!
 
-## P.S.
+### P.S.
 It is of course fine to ask for help with problems in your config as well.
 
 # License
