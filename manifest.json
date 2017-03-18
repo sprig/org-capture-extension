@@ -14,5 +14,13 @@
 
     "browser_action": {
         "default_icon": "org-mode-unicorn.png"
+    },
+
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+L"
+            }
+        }
     }
 }
