@@ -1,6 +1,6 @@
 # Org Capture Extension
 
-This is an extension for Google Chrome (tm) which adds a "Capture" button, sending the site address, title, and selected text (if any) to emacs via org-protocol, see the [Org-Mode site] for instructions for setting that up org-protocol. The extentsion itself is available at the [Chrome App Store].
+This is an extension for Google Chrome (tm) and Firefox (tm) which adds a "Capture" button, sending the site address, title, and selected text (if any) to emacs via org-protocol, see the [Org-Mode site] for instructions for setting that up org-protocol. The extentsion itself is available at the [Chrome App Store].
 
 # Improvements
 
