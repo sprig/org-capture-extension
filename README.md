@@ -24,7 +24,7 @@ The gist of it is to make your system recognize emacsclient as the handler of ``
 
 ### Register emacsclient as the ```org-protocol``` handler
 
-#### Under Linux
+#### Under Linux (non-KDE)
 
 ``` bash
 cat > "${HOME}/.local/share/applications/org-protocol.desktop" << EOF
@@ -38,14 +38,50 @@ MimeType=x-scheme-handler/org-protocol;
 EOF
 ```
 
-And then (for non-KDE)
+And then
 ``` bash
 update-desktop-database ~/.local/share/applications/
 ```
 
-or for KDE
+#### Under Linux (KDE)
+##### Note: This is a workaround to issue #16 - See comment [here](https://github.com/sprig/org-capture-extension/issues/16#issuecomment-305050310)
+
+Create the file
+*/usr/local/bin/emacs-capture*
+```sh
+#!/bin/sh
+
+# HACK: workaround for a kde-open bug (feature?) that might have
+#       eaten a colon from our argument, om nom nom
+argv=()
+for arg in "$@"; do
+    re='s_^org-protocol:/+capture:?/+_org-protocol://capture://_'
+    argv+=("$(echo -n "$arg" | sed -Ez "$re")")
+done
+
+# Note: feel free to add any other arguments you want,
+#  e.g. emacsclient --alternate-editor= -c "${argv[@]}"
+emacsclient "${argv[@]}"
+```
+And the file
+
+*$HOME/.local/share/applications/emacs-capture.desktop*
+```desktop
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Emacs Client
+Exec=emacs-capture "%u"
+Icon=emacs-icon
+Type=Application
+Terminal=false
+MimeType=x-scheme-handler/org-protocol;
+```
+
+Finally, run
+
 ``` bash
 kbuildsycoca4
+sudo update-desktop-database
 ```
 
 #### Under OSX
