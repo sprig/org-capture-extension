@@ -6,17 +6,17 @@ var capture = function(){
     var uri = 'org-protocol://';
     if (selection != "")
     {
-	uri += 'capture:/p/';
+	uri += 'capture?template=p';
     }
     else
     {
-	uri += 'capture:/L/'
+	uri += 'capture?template=L'
     };
 
-    uri += encodeURIComponent(location.href) + '/' +
+    uri += '&url=' + encodeURIComponent(location.href) + '&title=' +
 	esc(document.title) ;
 
-    if (selection != "") { uri += '/' + esc(selection); };
+    if (selection != "") { uri += '&body=' + esc(selection); };
 
     console.log("Capturing the following URI with org-protocol:", uri);
 

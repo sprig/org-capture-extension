@@ -22,6 +22,29 @@ Detailed instructions available at [Org-Mode site].
 
 The gist of it is to make your system recognize emacsclient as the handler of ```org-protocol://``` links. In addition, one needs to set up emacs to load org-protocol and to set up capture templates.
 
+### Modify xdg-open behavior under Linux
+
+```bash
+sudo dnf install pcre-tools # Fedora
+sudo apt install pcregrep   # Debian/Ubuntu
+sudo pacman -S pcre         # Arch
+```
+
+```bash
+sudo mv -iv /usr/bin/xdg-open /usr/bin/system-xdg-open
+sudoedit /usr/bin/xdg-open # Paste a wrapper
+#!/bin/bash
+XDG_OPEN='/usr/bin/system-xdg-open'
+EMACS_CLIENT='/usr/bin/emacsclient'
+
+if echo "$1" | pcregrep -q '^org-protocol?://'; then
+    "$EMACS_CLIENT" ${*}
+    exit 0
+else
+    $XDG_OPEN ${*}
+fi
+```
+
 ### Register emacsclient as the ```org-protocol``` handler
 
 #### Under Linux (non-KDE)
