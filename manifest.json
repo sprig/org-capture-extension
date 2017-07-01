@@ -5,6 +5,10 @@
     "description": "A helper for capturing things via org-protocol in emacs: First, set up: http://orgmode.org/worg/org-contrib/org-protocol.html",
     "homepage_url": "https://github.com/sprig/org-capture-extension",
 
+    "icons": {
+        "128": "org-mode-unicorn.png"
+    },
+
     "background": {
         "persistent": false,
         "scripts": ["background.js"]
