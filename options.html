@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Org Capture Settings</title>
+        <style>
+         body: { padding: 10px; }
+        </style>
+    </head>
+
+    <body>
+
+        <table>
+            <tr>
+                <td>
+                    Selected Template
+                </td>
+                <td>
+                    <input id="selTemplate" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Unselected Template
+                </td>
+                <td>
+                    <input id="unselTemplate">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Old-style Links?
+                </td>
+                <td>
+                    <input type="checkbox" id="useOldstyle" />
+                </td>
+            </tr>
+        </table>
+        
+        <div id="status"></div>
+        <button id="save">Save</button>
+
+        <script src="options.js"></script>
+    </body>
+</html>

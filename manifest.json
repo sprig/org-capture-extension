@@ -10,10 +10,14 @@
         "scripts": ["background.js"]
     },
 
-    "permissions": ["activeTab"],
+    "permissions": ["activeTab", "tabs", "commands", "storage"],
 
     "browser_action": {
         "default_icon": "org-mode-unicorn.png"
+    },
+
+    "options_ui": {
+        "page": "options.html"
     },
 
     "commands": {
@@ -21,6 +25,20 @@
             "suggested_key": {
                 "default": "Ctrl+Shift+L"
             }
+        },
+        "do-capture": {
+            "suggested_key": {
+                "default": "Alt+C"
+            },
+            "description": "Capture a link.",
+            "global": false
+        },
+        "do-store-link": {
+            "suggested_key": {
+                "default": "Alt+L"
+            },
+            "description": "Store a link.",
+            "global": false
         }
     }
 }

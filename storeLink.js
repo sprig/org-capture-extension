@@ -15,15 +15,19 @@ function createStoreURL(title, url, oldStyle) {
         return "org-protocol://store-link?url="+url+'&title='+title;
 }
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-    chrome.tabs.executeScript({file: "capture.js"}, (function (url_array) {}));
-});
+function storeIt() {
+    var url = encodeURIComponent(location.href);
+    var title = escapeIt(document.title);
 
-chrome.commands.onCommand.addListener(function(command) {
-    if(command === "do-capture") {
-        chrome.tabs.executeScript({file: "capture.js"}, (function (url_array) {}));
-    }
-    else if(command === "do-store-link") {
-        chrome.tabs.executeScript({file: "storeLink.js"}, (function (url_array) {}));
-    }
-});
+    chrome.storage.sync.get({
+        selectedTemplate: 'nql',
+        unselectedTemplate: 'b',
+        useOldStyleLinks: false
+    }, function(items) {
+        var uri = createStoreURL(title, url, items.useOldStyleLinks);
+        console.log(uri);
+        location.href = uri;
+    });
+}
+
+storeIt();
