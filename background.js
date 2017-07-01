@@ -26,4 +26,7 @@ chrome.commands.onCommand.addListener(function(command) {
     else if(command === "do-store-link") {
         chrome.tabs.executeScript({file: "storeLink.js"}, (function (url_array) {}));
     }
+    else if(command === "do-open-source") {
+        chrome.tabs.executeScript({file: "openSource.js"}, (function (url_array) {}));
+    }
 });

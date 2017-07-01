@@ -43,6 +43,13 @@
             },
             "description": "Store a link.",
             "global": false
+        },
+        "do-open-source": {
+            "suggested_key": {
+                "default": "Alt+E"
+            },
+            "description": "Open the page source in Emacs.",
+            "global": false
         }
     }
 }
