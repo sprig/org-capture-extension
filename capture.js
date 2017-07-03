@@ -21,8 +21,8 @@ function captureIt() {
     var title = escapeIt(document.title);
 
     chrome.storage.sync.get({
-        selectedTemplate: 'nql',
-        unselectedTemplate: 'b',
+        selectedTemplate: 'p',
+        unselectedTemplate: 'L',
         useOldStyleLinks: false
     }, function(items) {
         var uri = '';

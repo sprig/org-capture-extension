@@ -22,8 +22,8 @@ function save_options() {
 function restore_options() {
     // Use default value color = 'red' and likesColor = true.
     chrome.storage.sync.get({
-        selectedTemplate: 'nql',
-        unselectedTemplate: 'b',
+        selectedTemplate: 'L',
+        unselectedTemplate: 'p',
         useOldStyleLinks: false
     }, function(items) {
         document.getElementById('unselTemplate').value = items.unselectedTemplate;
