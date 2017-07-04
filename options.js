@@ -2,7 +2,7 @@
 function save_options() {
     var selTemp = document.getElementById('selTemplate').value;
     var unselTemp = document.getElementById('unselTemplate').value;
-    var useOldStyleLinks = document.getELementById('useOldstyle').checked;
+    var useOldStyleLinks = document.getElementById('useOldstyle').checked;
     chrome.storage.sync.set({
         selectedTemplate: selTemp,
         unselectedTemplate: unselTemp,
@@ -28,7 +28,7 @@ function restore_options() {
     }, function(items) {
         document.getElementById('unselTemplate').value = items.unselectedTemplate;
         document.getElementById('selTemplate').value = items.selectedTemplate;
-        document.getELementById('useOldstyle').checked = items.useOldstyleLinks;
+        document.getElementById('useOldstyle').checked = items.useOldstyleLinks;
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
