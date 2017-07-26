@@ -8,14 +8,14 @@ function escapeIt(text) {
                        "[']" ,escape("'"));
 }
 
-function createCaptureURL(template, title, url, selection, oldStyle) {
+function createOpenSourceURL(url, oldStyle) {
     if (oldStyle == true)
-        return "org-protocol:///capture:/"+template+'/'+url+'/'+title + ((selection === '') ? '' : ('/' + selection));
+        return "org-protocol:///open-source:/"+url;
     else
-        return "org-protocol:///capture?template="+template+'&url='+url+'&title='+title+((selection === '') ? '' : ('&body=' + selection));
+        return "org-protocol:///capture?&url="+url;
 }
 
-function captureIt() {
+function openIt() {
     var selection = window.getSelection().toString();
     var url = encodeURIComponent(location.href);
     var title = escapeIt(document.title);
@@ -25,13 +25,9 @@ function captureIt() {
         unselectedTemplate: 'b',
         useOldStyleLinks: false
     }, function(items) {
-        var uri = '';
-        if (selection != '')
-            uri = createCaptureURL(items.selectedTemplate, title, url, selection, items.useOldStyleLinks);
-        else
-            uri = createCaptureURL(items.unselectedTemplate, title, url, selection, items.useOldStyleLinks);
+        var uri = createOpenSourceURL(url, items.useOldStyleLinks);
         location.href = uri;
     });
 }
 
-captureIt();
+open_It();
