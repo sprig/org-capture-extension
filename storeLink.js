@@ -10,9 +10,9 @@ function escapeIt(text) {
 
 function createStoreURL(title, url, oldStyle) {
     if (oldStyle == true)
-        return "org-protocol://store-link:/"+url+"/"+title;
+        return "org-protocol:///store-link:/"+url+"/"+title;
     else
-        return "org-protocol://store-link?url="+url+'&title='+title;
+        return "org-protocol:///store-link?url="+url+'&title='+title;
 }
 
 function storeIt() {

@@ -10,9 +10,9 @@ function escapeIt(text) {
 
 function createOpenSourceURL(url, oldStyle) {
     if (oldStyle == true)
-        return "org-protocol://open-source:/"+url;
+        return "org-protocol:///open-source:/"+url;
     else
-        return "org-protocol://capture?&url="+url;
+        return "org-protocol:///capture?&url="+url;
 }
 
 function openIt() {

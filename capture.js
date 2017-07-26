@@ -10,9 +10,9 @@ function escapeIt(text) {
 
 function createCaptureURL(template, title, url, selection, oldStyle) {
     if (oldStyle == true)
-        return "org-protocol://capture:/"+template+'/'+url+'/'+title + ((selection === '') ? '' : ('/' + selection));
+        return "org-protocol:///capture:/"+template+'/'+url+'/'+title + ((selection === '') ? '' : ('/' + selection));
     else
-        return "org-protocol://capture?template="+template+'&url='+url+'&title='+title+((selection === '') ? '' : ('&body=' + selection));
+        return "org-protocol:///capture?template="+template+'&url='+url+'&title='+title+((selection === '') ? '' : ('&body=' + selection));
 }
 
 function captureIt() {
