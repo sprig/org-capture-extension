@@ -2,11 +2,11 @@
 function save_options() {
     var selTemp = document.getElementById('selTemplate').value;
     var unselTemp = document.getElementById('unselTemplate').value;
-    var oldStyleP = document.getElementById('useOldstyle').checked;
+    var NewStyleP = document.getElementById('useNewStyle').checked;
     chrome.storage.sync.set({
         selectedTemplate: selTemp,
         unselectedTemplate: unselTemp,
-        useOldStyleLinks: oldStyleP
+        useNewStyleLinks: NewStyleP
     }, function() {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
@@ -24,11 +24,11 @@ function restore_options() {
     chrome.storage.sync.get({
         selectedTemplate: 'L',
         unselectedTemplate: 'p',
-        useOldStyleLinks: false
+        useNewStyleLinks: true
     }, function(items) {
         document.getElementById('unselTemplate').value = items.unselectedTemplate;
         document.getElementById('selTemplate').value = items.selectedTemplate;
-        document.getElementById('useOldstyle').checked = items.useOldStyleLinks;
+        document.getElementById('useNewStyle').checked = items.useNewStyleLinks;
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

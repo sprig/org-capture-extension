@@ -8,11 +8,11 @@ function escapeIt(text) {
                        "[']" ,escape("'"));
 }
 
-function createCaptureURL(template, title, url, selection, oldStyle) {
-    if (oldStyle)
-        return "org-protocol://capture:/"+template+'/'+url+'/'+title + ((selection === '') ? '' : ('/' + selection));
-    else
+function createCaptureURL(template, title, url, selection, NewStyle) {
+    if (NewStyle)
         return "org-protocol://capture?template="+template+'&url='+url+'&title='+title+((selection === '') ? '' : ('&body=' + selection));
+    else
+        return "org-protocol://capture:/"+template+'/'+url+'/'+title + ((selection === '') ? '' : ('/' + selection));
 }
 
 function captureIt() {
@@ -24,16 +24,16 @@ function captureIt() {
         {
             selectedTemplate: 'p',
             unselectedTemplate: 'L',
-            useOldStyleLinks: true,
+            useNewStyleLinks: false,
             debug: false
         },
         function(options) {
             var uri = '';
 
             if (selection)
-                uri = createCaptureURL(options.selectedTemplate, title, url, selection, options.useOldStyleLinks);
+                uri = createCaptureURL(options.selectedTemplate, title, url, selection, options.useNewStyleLinks);
             else
-                uri = createCaptureURL(options.unselectedTemplate, title, url, selection, options.useOldStyleLinks);
+                uri = createCaptureURL(options.unselectedTemplate, title, url, selection, options.useNewStyleLinks);
 
             if (options.debug)
                 console.log("Capturing the following URI with org-protocol:", uri);
