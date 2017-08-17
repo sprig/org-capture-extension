@@ -16,7 +16,7 @@ function createCaptureURL(template, title, url, selection, oldStyle) {
 }
 
 function captureIt() {
-    var selection = window.getSelection().toString();
+    var selection = escapeIt(window.getSelection().toString());
     var url = encodeURIComponent(location.href);
     var title = escapeIt(document.title);
 
