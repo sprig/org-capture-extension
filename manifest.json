@@ -21,9 +21,11 @@
     },
 
     "commands": {
-        "_execute_browser_action": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+L"
+        "org-capture": {
+	    "description": "Capture current page with org-capture",
+	    "suggested_key": {
+                "default": "Ctrl+Shift+L",
+		"mac": "Command+Shift+L"
             }
         }
     }
