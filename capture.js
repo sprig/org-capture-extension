@@ -9,7 +9,7 @@ function escapeIt(text) {
 }
 
 function createCaptureURL(template, title, url, selection, oldStyle) {
-    if (oldStyle == true)
+    if (oldStyle)
         return "org-protocol://capture:/"+template+'/'+url+'/'+title + ((selection === '') ? '' : ('/' + selection));
     else
         return "org-protocol://capture?template="+template+'&url='+url+'&title='+title+((selection === '') ? '' : ('&body=' + selection));
