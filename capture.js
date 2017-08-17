@@ -20,19 +20,26 @@ function captureIt() {
     var url = encodeURIComponent(location.href);
     var title = escapeIt(document.title);
 
-    chrome.storage.sync.get({
-        selectedTemplate: 'p',
-        unselectedTemplate: 'L',
-        useOldStyleLinks: false
-    }, function(items) {
-        var uri = '';
-        if (selection != '')
-            uri = createCaptureURL(items.selectedTemplate, title, url, selection, items.useOldStyleLinks);
-        else
-            uri = createCaptureURL(items.unselectedTemplate, title, url, selection, items.useOldStyleLinks);
-        alert(uri);
-        location.href = uri;
-    });
+    chrome.storage.sync.get(
+        {
+            selectedTemplate: 'p',
+            unselectedTemplate: 'L',
+            useOldStyleLinks: true,
+            debug: false
+        },
+        function(options) {
+            var uri = '';
+
+            if (selection)
+                uri = createCaptureURL(options.selectedTemplate, title, url, selection, options.useOldStyleLinks);
+            else
+                uri = createCaptureURL(options.unselectedTemplate, title, url, selection, options.useOldStyleLinks);
+
+            if (options.debug)
+                console.log("Capturing the following URI with org-protocol:", uri);
+
+            location.href = uri;
+        });
 }
 
 captureIt();
