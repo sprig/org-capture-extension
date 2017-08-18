@@ -5,7 +5,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
         selectedTemplate: 'p',
         unselectedTemplate: 'L',
         useNewStyleLinks: true,
-        debug: false
+        debug: false,
+        overlay: true
       });
   else if ((details.reason == "update" && details.previousVersion.startsWith("0.1")))
     chrome.storage.sync.set(
@@ -13,7 +14,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
         selectedTemplate: 'p',
         unselectedTemplate: 'L',
         useNewStyleLinks: false,
-        debug: false
+        debug: false,
+        overlay: true
       });
 });
 
