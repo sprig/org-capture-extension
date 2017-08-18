@@ -4,7 +4,12 @@ This is an extension for Google Chrome (tm) and Firefox (tm) which adds a "Captu
 
 # Improvements
 
-This extension has room for improvement; Specifically, people would probably like to choose template letters other than the ones I picked for them. If you wish to add a small "options" page with an ability to select handler letters, that would be cool.
+- Adding options for selecting the exact structure of the links that are constructed (e.g. for the benefit of people with '///' problems).
+- There is always room to improve. Open a ticket with your ideas.
+
+# Example Usage
+[![Example Usage Video](https://img.youtube.com/vi/zKDHto-4wsU/0.jpg)](https://www.youtube.com/watch?v=zKDHto-4wsU)
+![Example Usage Screenshot](https://dl.dropboxusercontent.com/s/x2xjgg7bnwuj6uv/Screenshot.png)
 
 # Problems? Please [click here](#troubleshooting) or scroll to the bottom.
 
