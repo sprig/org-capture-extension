@@ -1,5 +1,64 @@
 (function () {
 
+
+  class Capture {
+
+   createCaptureURI() {
+     opts = this;
+     if (this.useNewStyleLinks)
+       return "org-protocol://"+`${opts["protocol"]}`+"template="+template+'&url='+this.encoded_url+'&title='+this.escaped_title+'&body='+this.selection_text;
+     else
+       return "org-protocol://"+this.protocol+":/"+template+'/'+this.encoded_url+'/'+this.escaped_title+'/'+this.selection_text;
+    }
+
+    constructor() {
+      this.window = window;
+      this.document = document;
+      this.location = location;
+
+      this.selection_text = escapeIt(window.getSelection().toString());
+      this.encoded_url = encodeURIComponent(location.href);
+      this.escaped_title = escapeIt(document.title);
+
+    }
+
+    capture() {
+      var uri = this.createCaptureURI();
+
+      if (this.debug) {
+        logURI(uri);
+      }
+
+      location.href = uri;
+
+      if (this.overlay) {
+        toggleOverlay();
+      }
+    }
+
+    captureIt(options) {
+      if (chrome.runtime.lastError) {
+        alert("Could not capture url. Error loading options: " + chrome.runtime.lastError.message);
+        return;
+      }
+
+      if (this.selection_text) {
+        this.template = this.selectedTemplate;
+        this.protocol = this.selectedProtocol;
+      } else {
+        this.template = this.unselectedTemplate;
+        this.protocol = this.unselectedProtocol;
+      }
+
+      Object.keys(options).forEach(function(k,i) {
+        this[k] = options[k];
+      });
+
+      this.capture();
+    }
+  }
+
+
   function replace_all(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
   }
@@ -8,13 +67,6 @@
     return replace_all(replace_all(replace_all(encodeURIComponent(text), "[(]", escape("(")),
                                    "[)]", escape(")")),
                        "[']" ,escape("'"));
-  }
-
-  function createCaptureURL(template, title, url, selection, NewStyle) {
-    if (NewStyle)
-      return "org-protocol://capture?template="+template+'&url='+url+'&title='+title+'&body='+selection;
-    else
-      return "org-protocol://capture:/"+template+'/'+url+'/'+title+'/'+selection;
   }
 
   function logURI(uri) {
@@ -38,6 +90,7 @@
 
       var css = document.createElement("style");
       css.type = "text/css";
+      // noinspection JSAnnotator
       css.innerHTML = `#org-capture-extension-overlay {
         position: fixed; /* Sit on top of the page content */
         display: none; /* Hidden by default */
@@ -77,39 +130,8 @@
 
   }
 
-  function captureIt(tab) {
-    var selection = escapeIt(window.getSelection().toString());
-    var url = encodeURIComponent(location.href);
-    var title = escapeIt(document.title);
-    var uri;
 
-    var capture = function(options) {
-      if (chrome.runtime.lastError) {
-        alert("Could not capture url. Error loading options: " + chrome.runtime.lastError.message);
-      }
-
-      uri = createCaptureURL(selection?options.selectedTemplate:options.unselectedTemplate, title, url, selection, options.useNewStyleLinks);
-
-      if (options.debug)
-        logURI(uri);
-
-      location.href = uri;
-
-      if (options.overlay)
-        toggleOverlay();
-    };
-
-    chrome.storage.sync.get(
-      {
-        selectedTemplate: 'p',
-        unselectedTemplate: 'L',
-        useNewStyleLinks: false,
-        debug: false,
-        overlay: true
-      },
-      capture);
-
-    return uri;
-  }
-  captureIt();
+  var capture = new Capture();
+  var f = function (options) {capture.captureIt(options)};
+  chrome.storage.sync.get(null, f);
 })();
