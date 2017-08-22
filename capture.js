@@ -67,8 +67,8 @@
 
   function escapeIt(text) {
     return replace_all(replace_all(replace_all(encodeURIComponent(text), "[(]", escape("(")),
-                                   "[)]", escape(")")),
-                       "[']" ,escape("'"));
+      "[)]", escape(")")),
+      "[']", escape("'"));
   }
 
   function logURI(uri) {
@@ -79,7 +79,7 @@
   function toggleOverlay() {
     var outer_id = "org-capture-extension-overlay";
     var inner_id = "org-capture-extension-text";
-    if (! document.getElementById(outer_id)) {
+    if (!document.getElementById(outer_id)) {
       var outer_div = document.createElement("div");
       outer_div.id = outer_id;
 
@@ -116,7 +116,7 @@
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
 }`;
-        document.body.appendChild(css);
+      document.body.appendChild(css);
     }
 
     function on() {
@@ -134,6 +134,8 @@
 
 
   var capture = new Capture();
-  var f = function (options) {capture.captureIt(options)};
+  var f = function (options) {
+    capture.captureIt(options)
+  };
   chrome.storage.sync.get(null, f);
 })();
