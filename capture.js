@@ -16,6 +16,9 @@
 
     createCaptureURI() {
       var $ = this;
+      var dosument = this.document;
+      var window = this.window;
+      var location = this.location;
       eval(this.createURI);
     }
 
