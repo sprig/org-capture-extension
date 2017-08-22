@@ -3,14 +3,6 @@
 
   class Capture {
 
-   createCaptureURI() {
-     opts = this;
-     if (this.useNewStyleLinks)
-       return "org-protocol://"+`${opts["protocol"]}`+"template="+template+'&url='+this.encoded_url+'&title='+this.escaped_title+'&body='+this.selection_text;
-     else
-       return "org-protocol://"+this.protocol+":/"+template+'/'+this.encoded_url+'/'+this.escaped_title+'/'+this.selection_text;
-    }
-
     constructor() {
       this.window = window;
       this.document = document;
@@ -22,14 +14,19 @@
 
     }
 
+    createCaptureURI() {
+      var $ = this;
+      eval(this.createURI);
+    }
+
     capture() {
-      var uri = this.createCaptureURI();
+      this.createCaptureURI();
 
       if (this.debug) {
-        logURI(uri);
+        logURI(this.uri);
       }
 
-      location.href = uri;
+      location.href = this.uri;
 
       if (this.overlay) {
         toggleOverlay();
@@ -42,6 +39,10 @@
         return;
       }
 
+      for (var k in options) {
+        this[k] = options[k];
+      }
+
       if (this.selection_text) {
         this.template = this.selectedTemplate;
         this.protocol = this.selectedProtocol;
@@ -50,9 +51,7 @@
         this.protocol = this.unselectedProtocol;
       }
 
-      Object.keys(options).forEach(function(k,i) {
-        this[k] = options[k];
-      });
+      this.protocol = "capture";
 
       this.capture();
     }
