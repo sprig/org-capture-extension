@@ -1,4 +1,86 @@
+///////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2015-2017 Konstantin Kliakhandler				 //
+// 										 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy	 //
+// of this software and associated documentation files (the "Software"), to deal //
+// in the Software without restriction, including without limitation the rights	 //
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell	 //
+// copies of the Software, and to permit persons to whom the Software is	 //
+// furnished to do so, subject to the following conditions:			 //
+// 										 //
+// The above copyright notice and this permission notice shall be included in	 //
+// all copies or substantial portions of the Software.				 //
+// 										 //
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR	 //
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,	 //
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE	 //
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER	 //
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, //
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN	 //
+// THE SOFTWARE.								 //
+///////////////////////////////////////////////////////////////////////////////////
+
+
 (function () {
+
+
+  class Capture {
+
+   createCaptureURI() {
+     opts = this;
+     if (this.useNewStyleLinks)
+       return "org-protocol://"+`${opts["protocol"]}`+"template="+template+'&url='+this.encoded_url+'&title='+this.escaped_title+'&body='+this.selection_text;
+     else
+       return "org-protocol://"+this.protocol+":/"+template+'/'+this.encoded_url+'/'+this.escaped_title+'/'+this.selection_text;
+    }
+
+    constructor() {
+      this.window = window;
+      this.document = document;
+      this.location = location;
+
+      this.selection_text = escapeIt(window.getSelection().toString());
+      this.encoded_url = encodeURIComponent(location.href);
+      this.escaped_title = escapeIt(document.title);
+
+    }
+
+    capture() {
+      var uri = this.createCaptureURI();
+
+      if (this.debug) {
+        logURI(uri);
+      }
+
+      location.href = uri;
+
+      if (this.overlay) {
+        toggleOverlay();
+      }
+    }
+
+    captureIt(options) {
+      if (chrome.runtime.lastError) {
+        alert("Could not capture url. Error loading options: " + chrome.runtime.lastError.message);
+        return;
+      }
+
+      if (this.selection_text) {
+        this.template = this.selectedTemplate;
+        this.protocol = this.selectedProtocol;
+      } else {
+        this.template = this.unselectedTemplate;
+        this.protocol = this.unselectedProtocol;
+      }
+
+      Object.keys(options).forEach(function(k,i) {
+        this[k] = options[k];
+      });
+
+      this.capture();
+    }
+  }
+
 
   function replace_all(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
@@ -8,13 +90,6 @@
     return replace_all(replace_all(replace_all(encodeURIComponent(text), "[(]", escape("(")),
                                    "[)]", escape(")")),
                        "[']" ,escape("'"));
-  }
-
-  function createCaptureURL(template, title, url, selection, NewStyle) {
-    if (NewStyle)
-      return "org-protocol://capture?template="+template+'&url='+url+'&title='+title+'&body='+selection;
-    else
-      return "org-protocol://capture:/"+template+'/'+url+'/'+title+'/'+selection;
   }
 
   function logURI(uri) {
@@ -38,6 +113,7 @@
 
       var css = document.createElement("style");
       css.type = "text/css";
+      // noinspection JSAnnotator
       css.innerHTML = `#org-capture-extension-overlay {
         position: fixed; /* Sit on top of the page content */
         display: none; /* Hidden by default */
@@ -77,39 +153,8 @@
 
   }
 
-  function captureIt(tab) {
-    var selection = escapeIt(window.getSelection().toString());
-    var url = encodeURIComponent(location.href);
-    var title = escapeIt(document.title);
-    var uri;
 
-    var capture = function(options) {
-      if (chrome.runtime.lastError) {
-        alert("Could not capture url. Error loading options: " + chrome.runtime.lastError.message);
-      }
-
-      uri = createCaptureURL(selection?options.selectedTemplate:options.unselectedTemplate, title, url, selection, options.useNewStyleLinks);
-
-      if (options.debug)
-        logURI(uri);
-
-      location.href = uri;
-
-      if (options.overlay)
-        toggleOverlay();
-    };
-
-    chrome.storage.sync.get(
-      {
-        selectedTemplate: 'p',
-        unselectedTemplate: 'L',
-        useNewStyleLinks: false,
-        debug: false,
-        overlay: true
-      },
-      capture);
-
-    return uri;
-  }
-  captureIt();
+  var capture = new Capture();
+  var f = function (options) {capture.captureIt(options)};
+  chrome.storage.sync.get(null, f);
 })();
