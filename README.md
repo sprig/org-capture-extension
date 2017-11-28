@@ -54,7 +54,7 @@ update-desktop-database ~/.local/share/applications/
 Create the file
 */usr/local/bin/emacs-capture*
 ```sh
-#!/bin/sh
+#!/bin/bash
 
 # HACK: workaround for a kde-open bug (feature?) that might have
 #       eaten a colon from our argument, om nom nom
