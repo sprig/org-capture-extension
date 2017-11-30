@@ -190,7 +190,25 @@ This means that you need to have appropriate capture templates for "L" and for "
 ))
 ```
 
-_Hint:_ You can put code in capture handlers via %() blocks. I use this mechanism to automatically close the newly crated frame in the L template. If anyone cares to know, I'll add the details.
+
+_Hint:_ You can put code in capture handlers via %() blocks. I use this mechanism to automatically close the newly crated frame in the L template. If anyone cares to know, I'll add the details. Another example use is below.
+
+[*Note*](https://github.com/sprig/org-capture-extension/issues/37): The `L` template above would break for links to pages having `[` and `]` characters in their page titles - notably ArXiv. To mitigae this, you can use the improved template, contributed by [Vincent Picaud](https://www.github.com/vincent-picaud):
+
+```lisp
+(defun transform-square-brackets-to-round-ones(string-to-transform)
+  "Transforms [ into ( and ] into ), other chars left unchanged."
+  (concat 
+  (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) string-to-transform))
+  )
+
+(setq org-capture-templates `(
+	("p" "Protocol" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+        "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")	
+	("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+        "* %? [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n")
+))
+```
 
 #### Example: closins the frame after a capture
 
