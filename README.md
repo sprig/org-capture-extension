@@ -155,6 +155,10 @@ and
 
 and restart the desktop. You can also download [EmacsClient.app.zip], which I prepared in advance, if you are lazy.
 
+#### Install EmacsClient.app with homebrew cask
+
+If you have Homebrew and [Homebrew-Cask](https://caskroom.github.io/) installed, you can also install [EmacsClient.app.zip] with `brew cask install emacsclient`
+
 #### Under Windows
 
 Open the Registry Editor (Win-R, then type `regedit`). Within `HKEY_CLASSES_ROOT`, add a key called `org-protocol`. Within `org-protocol`, set the data for the string value with the name `(Default)`  to be `URL:org-protocol`, add another string value with name `URL Protocol` and no data, and add a key called `shell`.
