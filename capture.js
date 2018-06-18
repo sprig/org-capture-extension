@@ -27,11 +27,12 @@
   class Capture {
 
    createCaptureURI() {
-     opts = this;
+     var protocol = "capture";
+     var template = (this.selection_text != "" ? this.selectedTemplate : this.unselectedTemplate);
      if (this.useNewStyleLinks)
-       return "org-protocol://"+`${opts["protocol"]}`+"template="+template+'&url='+this.encoded_url+'&title='+this.escaped_title+'&body='+this.selection_text;
+       return "org-protocol://"+protocol+"?template="+template+'&url='+this.encoded_url+'&title='+this.escaped_title+'&body='+this.selection_text;
      else
-       return "org-protocol://"+this.protocol+":/"+template+'/'+this.encoded_url+'/'+this.escaped_title+'/'+this.selection_text;
+       return "org-protocol://"+protocol+":/"+template+'/'+this.encoded_url+'/'+this.escaped_title+'/'+this.selection_text;
     }
 
     constructor() {
@@ -73,10 +74,7 @@
         this.protocol = this.unselectedProtocol;
       }
 
-      Object.keys(options).forEach(function(k,i) {
-        this[k] = options[k];
-      });
-
+      for(var k in options) this[k] = options[k];
       this.capture();
     }
   }
