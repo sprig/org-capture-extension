@@ -95,22 +95,22 @@ Start Applescript Editor. Paste the following snippet:
 
 ``` applescript
 on emacsclient(input)
-	do shell script "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/emacsclient -n -c -a \"/Applications/Emacs.app/Contents/MacOS/Emacs\" '" & input & "'"
+    do shell script "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/emacsclient -n -c -a \"/Applications/Emacs.app/Contents/MacOS/Emacs\" '" & input & "'"
 end emacsclient
 
 on open location input
-	emacsclient(input)
+    emacsclient(input)
 end open location
 
 on open inputs
-	repeat with raw_input in inputs
-		set input to POSIX path of raw_input
-		emacsclient(input)
-	end repeat
+    repeat with raw_input in inputs
+        set input to POSIX path of raw_input
+        emacsclient(input)
+    end repeat
 end open
 
 on run
-	do shell script emacsclient("")
+    do shell script emacsclient("")
 end run
 ```
 
@@ -121,14 +121,14 @@ And add there the following:
 ``` plist
 <key>CFBundleURLTypes</key>
 <array>
-	<dict>
-		<key>CFBundleURLName</key>
-		<string>org-protocol</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>org-protocol</string>
-		</array>
-	</dict>
+    <dict>
+        <key>CFBundleURLName</key>
+        <string>org-protocol</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>org-protocol</string>
+        </array>
+    </dict>
 </array>
 ```
 
@@ -136,20 +136,20 @@ and
 ``` plist
 <key>CFBundleDocumentTypes</key>
 <array>
-	<dict>
-		<key>CFBundleTypeExtensions</key>
-		<array>
-			<string>*</string>
-		</array>
-		<key>CFBundleTypeName</key>
-		<string>All</string>
-		<key>CFBundleTypeOSTypes</key>
-		<array>
-			<string>****</string>
-		</array>
-		<key>CFBundleTypeRole</key>
-		<string>Viewer</string>
-	</dict>
+    <dict>
+        <key>CFBundleTypeExtensions</key>
+        <array>
+            <string>*</string>
+        </array>
+        <key>CFBundleTypeName</key>
+        <string>All</string>
+        <key>CFBundleTypeOSTypes</key>
+        <array>
+            <string>****</string>
+        </array>
+        <key>CFBundleTypeRole</key>
+        <string>Viewer</string>
+    </dict>
 </array>
 ```
 
@@ -187,9 +187,9 @@ This means that you need to have appropriate capture templates for "L" and for "
 
 ```lisp
 (setq org-capture-templates `(
-	("p" "Protocol" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+    ("p" "Protocol" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
         "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-	("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+    ("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
         "* %? [[%:link][%:description]] \nCaptured On: %U")
 ))
 ```
@@ -207,9 +207,9 @@ _Hint:_ You can put code in capture handlers via %() blocks. I use this mechanis
   )
 
 (setq org-capture-templates `(
-	("p" "Protocol" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
-        "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")	
-	("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+    ("p" "Protocol" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+        "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")     
+    ("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
         "* %? [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n")
 ))
 ```
