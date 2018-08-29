@@ -17,7 +17,7 @@
   },
 
   "browser_action": {
-    "default_icon": "org-mode-unicorn.png"
+    "default_icon": "org-mode-unicorn.svg"
   },
 
   "commands": {
