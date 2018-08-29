@@ -29,7 +29,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
         unselectedTemplate: 'L',
         useNewStyleLinks: true,
         debug: false,
-        overlay: true
+        overlay: true,
+        shortcut: "ctrl+c c"
       });
   else if ((details.reason == "update" && details.previousVersion.startsWith("0.1")))
     chrome.storage.sync.set(
@@ -38,7 +39,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
         unselectedTemplate: 'L',
         useNewStyleLinks: false,
         debug: false,
-        overlay: true
+        overlay: true,
+        shortcut: "ctrl+c c"
       });
 });
 

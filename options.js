@@ -28,13 +28,15 @@ function save_options() {
     var NewStyleP = document.getElementById('useNewStyle').checked;
     var debugP = document.getElementById('debug').checked;
     var overlayP = document.getElementById('overlay').checked;
+    var shortcut = document.getElementById('shortcut').value;
 
     chrome.storage.sync.set({
         selectedTemplate: selTemp,
         unselectedTemplate: unselTemp,
         useNewStyleLinks: NewStyleP,
         debug: debugP,
-        overlay: overlayP
+        overlay: overlayP,
+        shortcut: shortcut
     }, function() {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
@@ -54,13 +56,15 @@ function restore_options() {
         unselectedTemplate: 'L',
         useNewStyleLinks: true,
         debug: false,
-        overlay: true
+        overlay: true,
+        shortcut: "ctrl+c c"
     }, function(options) {
         document.getElementById('unselTemplate').value = options.unselectedTemplate;
         document.getElementById('selTemplate').value = options.selectedTemplate;
         document.getElementById('useNewStyle').checked = options.useNewStyleLinks;
         document.getElementById('debug').checked = options.debug;
         document.getElementById('overlay').checked = options.overlay;
+        document.getElementById('shortcut').value = options.shortcut;
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
