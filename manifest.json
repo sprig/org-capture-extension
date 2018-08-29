@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Org Capture",
   "version": "0.2.1",
-  "description": "A helper for capturing things via org-protocol in emacs: First, set up: http://orgmode.org/worg/org-contrib/org-protocol.html",
+  "description": "A helper for capturing things via org-protocol in emacs. This is extension adds a \"Capture\" button, sending the site address, title, and selected text (if any) to emacs via org-protocol, see the Org-Mode site for instructions for setting that up org-protocol. Learn more about org-protocol at http://orgmode.org/worg/org-contrib/org-protocol.html",
   "homepage_url": "https://github.com/sprig/org-capture-extension",
 
   "background": {
