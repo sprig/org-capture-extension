@@ -45,3 +45,9 @@ chrome.runtime.onInstalled.addListener(function (details) {
 chrome.browserAction.onClicked.addListener(function (tab) {
   chrome.tabs.executeScript({file: "capture.js"});
 });
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request == "orgcapture") {
+    chrome.tabs.executeScript(null, {file: "capture.js"});
+  }
+});
