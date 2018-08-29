@@ -20,6 +20,13 @@
     "default_icon": "org-mode-unicorn.svg"
   },
 
+  "icons": {
+    "16": "org-mode-unicorn.svg",
+    "24": "org-mode-unicorn.svg",
+    "48": "org-mode-unicorn.svg",
+    "96": "org-mode-unicorn.svg"
+  },
+
   "commands": {
     "_execute_browser_action": {
       "description": "Capture current page with org-capture",
