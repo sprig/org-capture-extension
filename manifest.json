@@ -10,7 +10,12 @@
     "scripts": ["background.js"]
   },
 
-  "permissions": ["activeTab", "storage"],
+
+  "permissions": [
+    "activeTab",
+    "storage",
+    "<all_urls>"
+  ],
 
   "options_ui": {
     "page": "options.html"
