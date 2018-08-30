@@ -17,6 +17,7 @@
       ],
       "js": [
         "mousetrap.min.js",
+        "mousetrap-global-bind.min.js",
         "content.js"
       ]
     }
