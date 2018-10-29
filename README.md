@@ -155,9 +155,28 @@ and
 
 and restart the desktop. You can also download [EmacsClient.app.zip], which I prepared in advance, if you are lazy.
 
-#### Install EmacsClient.app with homebrew cask
+##### Install EmacsClient.app with homebrew cask
 
 If you have Homebrew and [Homebrew-Cask](https://caskroom.github.io/) installed, you can also install [EmacsClient.app.zip] with `brew cask install emacsclient`
+
+##### Frame Visibility
+
+Under some setups the emacs frame does not appear on top. @dangom [proposes a workaround using hammerspoon](https://github.com/sprig/org-capture-extension/issues/46#issuecomment-379498419):
+
+Add the following to your init.lua:
+
+```lua
+function emacsclientWatcher(appName, eventType, appObject)
+  if (eventType == hs.application.watcher.activated) then
+    if (appName == "Emacsclient") then
+      -- Bring Emacs to Front
+      hs.osascript.applescript('tell application "Emacs" to activate')
+    end
+  end
+end
+appWatcher = hs.application.watcher.new(emacsclientWatcher)
+appWatcher:start()
+```
 
 #### Under Windows
 
