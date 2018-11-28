@@ -25,6 +25,13 @@
         "default": "Ctrl+Shift+L",
         "mac": "Command+Shift+L"
       }
+    },
+    "capture-with-note": {
+      "description": "Prompt for note and capture",
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      }
     }
   }
 }

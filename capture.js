@@ -26,16 +26,21 @@
 
   class Capture {
 
-   createCaptureURI() {
+   createCaptureURI(note="") {
      var protocol = "capture";
-     var template = (this.selection_text != "" ? this.selectedTemplate : this.unselectedTemplate);
+
+     if (this.selection_text != "") {
+       note = this.selection_text;
+     }
+
+     var template = (note != "" ? this.selectedTemplate : this.unselectedTemplate);
      if (this.useNewStyleLinks)
-       return "org-protocol://"+protocol+"?template="+template+'&url='+this.encoded_url+'&title='+this.escaped_title+'&body='+this.selection_text;
+       return "org-protocol://"+protocol+"?template="+template+'&url='+this.encoded_url+'&title='+this.escaped_title+'&body='+note;
      else
-       return "org-protocol://"+protocol+":/"+template+'/'+this.encoded_url+'/'+this.escaped_title+'/'+this.selection_text;
+       return "org-protocol://"+protocol+":/"+template+'/'+this.encoded_url+'/'+this.escaped_title+'/'+note;
     }
 
-    constructor() {
+    constructor(with_note) {
       this.window = window;
       this.document = document;
       this.location = location;
@@ -43,20 +48,29 @@
       this.selection_text = escapeIt(window.getSelection().toString());
       this.encoded_url = encodeURIComponent(location.href);
       this.escaped_title = escapeIt(document.title);
-
+      this.with_note = with_note;
     }
 
-    capture() {
-      var uri = this.createCaptureURI();
-
+    triggerCapture(uri) {
       if (this.debug) {
         logURI(uri);
       }
-
       location.href = uri;
+    }
 
-      if (this.overlay) {
-        toggleOverlay();
+    capture() {
+      if (this.with_note) {
+          // we have to show overlay in this case
+          const that = this;
+          toggleOverlay(function(note_text) {
+              const uri = that.createCaptureURI(note_text);
+              that.triggerCapture(uri);
+          });
+      } else {
+          if (this.overlay) {
+              toggleOverlay();
+          }
+          this.triggerCapture(this.createCaptureURI());
       }
     }
 
@@ -95,10 +109,16 @@
     return uri;
   }
 
-  function toggleOverlay() {
-    var outer_id = "org-capture-extension-overlay";
-    var inner_id = "org-capture-extension-text";
-    if (! document.getElementById(outer_id)) {
+  function toggleOverlay(callback=null) {
+    var outer_id  = "org-capture-extension-overlay";
+    var inner_id  = "org-capture-extension-text";
+    var note_id   = "org-capture-extension-note";
+    var button_id = "org-capture-extension-button";
+    const prev = document.getElementById(outer_id);
+    if (prev) {
+        prev.parentNode.removeChild(prev); // to refresh in between 'normal capture' and 'capture with note'
+    }
+
       var outer_div = document.createElement("div");
       outer_div.id = outer_id;
 
@@ -106,13 +126,53 @@
       inner_div.id = inner_id;
       inner_div.innerHTML = "Captured";
 
+      if (callback !== null) { // capturing with note
+          inner_div.innerHTML = `
+<div><textarea id="${note_id}" rows="4" cols="50" placeholder="enter your note..."></textarea></div>
+<div><button id="${button_id}" type="button">capture!</button></div>
+`;
+      }
+
       outer_div.appendChild(inner_div);
+
       document.body.appendChild(outer_div);
+
+      if (callback !== null) {
+        const outer = document.getElementById(outer_id);
+        // cancel popup on clicking anywhere else or on escape press
+        outer.addEventListener('click', function (e) {
+          if (e.target !== this) {
+            return;
+          };
+          off();
+        });
+        outer.addEventListener('keydown', function (e) {
+          if (e.key == 'Escape') {
+            off();
+          }
+        });
+
+        const submit_note = function () {
+          const note_text = document.getElementById(note_id).value;
+          callback(note_text);
+          off();
+        };
+        document.getElementById(button_id).addEventListener('click', submit_note);
+
+        const note = document.getElementById(note_id);
+        note.addEventListener('keydown', function (e) {
+	        if (e.ctrlKey && e.key === 'Enter') {
+		        submit_note();
+	        }
+        });
+        note.focus();
+      }
+
 
       var css = document.createElement("style");
       css.type = "text/css";
       // noinspection JSAnnotator
-      css.innerHTML = `#org-capture-extension-overlay {
+      css.innerHTML = `#${outer_id} {
         position: fixed; /* Sit on top of the page content */
         display: none; /* Hidden by default */
         width: 100%; /* Full width (cover the whole page) */
@@ -126,7 +186,7 @@
         cursor: pointer; /* Add a pointer on hover */
     }
 
-    #org-capture-extension-text{
+    #${inner_id}{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -135,8 +195,7 @@
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
 }`;
-        document.body.appendChild(css);
-    }
+    document.body.appendChild(css);
 
     function on() {
       document.getElementById(outer_id).style.display = "block";
@@ -147,12 +206,14 @@
     }
 
     on();
-    setTimeout(off, 200);
+    if (callback === null) {
+        setTimeout(off, 200);
+    } // otherwise we're waiting for user action to hide overlay
 
   }
 
-
-  var capture = new Capture();
+    // capture_with_note is passed in background.js
+  var capture = new Capture(capture_with_note);
   var f = function (options) {capture.captureIt(options)};
   chrome.storage.sync.get(null, f);
 })();
