@@ -15,9 +15,7 @@
   "options_ui": {
     "page": "options.html"
   },
-
   "browser_action": {
-    "default_icon": "org-mode-unicorn.png"
   },
 
   "commands": {
