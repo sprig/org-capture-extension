@@ -29,7 +29,7 @@ The gist of it is to make your system recognize emacsclient as the handler of ``
 
 ### Register emacsclient as the ```org-protocol``` handler
 
-#### Under Linux (non-KDE)
+#### Under Linux
 
 ``` bash
 cat > "${HOME}/.local/share/applications/org-protocol.desktop" << EOF
@@ -43,13 +43,18 @@ MimeType=x-scheme-handler/org-protocol;
 EOF
 ```
 
-And then
+And then, for GTK-based DE:
 ``` bash
 update-desktop-database ~/.local/share/applications/
 ```
 
-#### Under Linux (KDE)
-##### Note: This is a workaround to issue #16 - See comment [here](https://github.com/sprig/org-capture-extension/issues/16#issuecomment-305050310)
+For KDE5:
+``` bash
+kbuildsycoca5
+xdg-mime default org-protocol.desktop x-scheme-handler/org-protocol
+```
+##### For KDE4
+###### Note: This is a workaround to issue #16 - See comment [here](https://github.com/sprig/org-capture-extension/issues/16#issuecomment-305050310)
 
 Create the file
 */usr/local/bin/emacs-capture*
