@@ -42,6 +42,24 @@ chrome.runtime.onInstalled.addListener(function (details) {
       });
 });
 
+function executeCapture(tab, with_note) {
+    chrome.tabs.executeScript(tab.id, {
+        code: 'var capture_with_note = ' + String(with_note) + ';'
+    }, function() {
+        chrome.tabs.executeScript(tab.id, {file: "capture.js"});
+    });
+}
+
 chrome.browserAction.onClicked.addListener(function (tab) {
-  chrome.tabs.executeScript({file: "capture.js"});
+    executeCapture(tab, false);
 });
+
+chrome.commands.onCommand.addListener(function(command) {
+    if (command === 'capture-with-note') {
+        chrome.tabs.query({currentWindow: true, active: true }, function (tabs) {
+            const current = tabs[0];
+            executeCapture(current, true);
+        });
+    }
+});
+
