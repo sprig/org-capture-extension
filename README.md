@@ -238,7 +238,7 @@ _Hint:_ You can put code in capture handlers via %() blocks. I use this mechanis
 ))
 ```
 
-#### Example: closins the frame after a capture
+#### Example: closing the frame after a capture
 
 If you wish to automatically close the emacs frame after a capture, add the following template:
 
