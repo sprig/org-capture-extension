@@ -100,7 +100,7 @@ Start Applescript Editor. Paste the following snippet:
 
 ``` applescript
 on emacsclient(input)
-	do shell script "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/emacsclient -n -c -a \"/Applications/Emacs.app/Contents/MacOS/Emacs\" '" & input & "'"
+	do shell script "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/emacsclient -n -c -a \"/Applications/Emacs.app/Contents/MacOS/Emacs\" '" & input
 end emacsclient
 
 on open location input
