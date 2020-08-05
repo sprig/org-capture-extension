@@ -29,7 +29,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
         unselectedTemplate: 'L',
         useNewStyleLinks: true,
         debug: false,
-        overlay: true
+        overlay: true,
+        convert2org: false
       });
   else if ((details.reason == "update" && details.previousVersion.startsWith("0.1")))
     chrome.storage.sync.set(
@@ -38,10 +39,11 @@ chrome.runtime.onInstalled.addListener(function (details) {
         unselectedTemplate: 'L',
         useNewStyleLinks: false,
         debug: false,
-        overlay: true
+        overlay: true,
+        convert2org: false
       });
 });
 
-chrome.browserAction.onClicked.addListener(function (tab) {
-  chrome.tabs.executeScript({file: "capture.js"});
+chrome.browserAction.onClicked.addListener(function(tab) {
+  chrome.tabs.executeScript({ file: "capture.js" });
 });
