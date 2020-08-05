@@ -107,35 +107,50 @@
       it.innerText = `[[${url}]]`;
     });
 
-    dom.querySelectorAll('a').forEach(it => {
-      if (/\[\[/.test(it.innerText))
-        return;
-      var url = new URL(it.href, window.location.href).href;
-      it.innerText = `[[${url}][${it.innerText}]]`;
-    });
-
     dom.querySelectorAll('blockquote').forEach(it => {
       it.innerHTML = srcBlock('#+begin_quote', '#+end_quote', it.innerText, "");
     });
 
-    ['p', 'h1', 'h2', 'h3', 'h4'].forEach((tag, idx) => {
+
+    dom.querySelectorAll('code, kbd').forEach(code => {
+      code.innerText = emphasize('~')(code.innerText);
+    });
+    dom.querySelectorAll('b, strong').forEach(b => {
+      b.innerText = emphasize('*')(b.innerText);
+    });
+    dom.querySelectorAll('i, em').forEach(i => {
+      i.innerText = emphasize('/')(i.innerText);
+    });
+    dom.querySelectorAll('del, s').forEach(s => {
+      s.innerText = emphasize('+')(s.innerText);
+    });
+
+    dom.querySelectorAll('p').forEach(it => {
+      it.innerHTML = `${it.innerText}
+`;
+    });
+
+    [, 'h1', 'h2', 'h3', 'h4'].forEach((tag, idx) => {
       dom.querySelectorAll(tag).forEach(it => {
-        if (idx == 0) {
-          it.querySelectorAll('code, kbd').forEach(code => {
-            code.innerText = emphasize('~')(code.innerText);
-          });
-          it.querySelectorAll('b, strong').forEach(b => {
-            b.innerText = emphasize('*')(b.innerText);
-          });
-          it.querySelectorAll('i, em').forEach(i => {
-            i.innerText = emphasize('/')(i.innerText);
-          });
-          it.querySelectorAll('del, s').forEach(s => {
-            s.innerText = emphasize('+')(s.innerText);
-          });
+        var a = it.querySelector('a');
+        console.log("a =====>", a && a.href)
+        if (a && /#(.+)/.test(a.href)) {
+          it.innerHTML = `${repeatStar(idx)} [[${a.href}][${it.innerText}]]`;
+        } else {
+          it.innerHTML = `${repeatStar(idx)} ${it.innerText}`;
         }
-        it.innerHTML = idx > 0 ? `${repeatStar(idx)} ${it.innerText}` : it.innerText;
       });
+    });
+
+    dom.querySelectorAll('a').forEach(it => {
+      if (/\[\[/.test(it.innerText))
+        return;
+      var url = new URL(it.href, window.location.href).href;
+      if (/#(.+)/.test(it.href)) {
+        it.innerText = `[[${url}][${it.innerText}]]`;
+        return;
+      }
+      it.innerText = `[[${url}][${it.alt || it.innerText || ''}]]`;
     });
 
     dom.querySelectorAll('ul').forEach(ul => {
@@ -166,7 +181,8 @@
   function srcBlock(start, end, body, header) {
     return `${start} ${header}
 ${body}
-${end}`;
+${end}
+`;
   }
 
   function repeatStar(n) {
