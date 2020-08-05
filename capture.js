@@ -111,10 +111,18 @@
       it.innerHTML = srcBlock('#+begin_quote', '#+end_quote', it.innerText, "");
     });
 
+    dom.querySelectorAll('pre').forEach(pre => {
+      var lang = pre.className.match(/lang-(\w+)/) || pre.parentNode.className.match(/highlight-source-(\w+)/);
+      lang = lang ? lang[1] : "";
 
-    dom.querySelectorAll('code, kbd').forEach(code => {
-      code.innerText = emphasize('~')(code.innerText);
+      var code = pre.querySelector('code');
+      if (code) {
+        code.innerHTML = srcBlock('#+begin_src', '#+end_src', code.innerText, lang);
+      } else {
+        pre.innerHTML = srcBlock('#+begin_src', '#+end_src', pre.innerText, lang);
+      }
     });
+
     dom.querySelectorAll('b, strong').forEach(b => {
       b.innerText = emphasize('*')(b.innerText);
     });
@@ -125,15 +133,18 @@
       s.innerText = emphasize('+')(s.innerText);
     });
 
+    dom.querySelectorAll('code, kbd').forEach(code => {
+      if (code.parentNode.nodeName != "PRE")
+        code.innerText = emphasize('~')(code.innerText);
+    });
+
     dom.querySelectorAll('p').forEach(it => {
-      it.innerHTML = `${it.innerText}
-`;
+      it.innerHTML = `${it.innerText}`;
     });
 
     [, 'h1', 'h2', 'h3', 'h4'].forEach((tag, idx) => {
       dom.querySelectorAll(tag).forEach(it => {
         var a = it.querySelector('a');
-        console.log("a =====>", a && a.href)
         if (a && /#(.+)/.test(a.href)) {
           it.innerHTML = `${repeatStar(idx)} [[${a.href}][${it.innerText}]]`;
         } else {
@@ -159,18 +170,6 @@
       });
     });
 
-    dom.querySelectorAll('pre').forEach(pre => {
-      var lang = pre.className.match(/lang-(\w+)/) || pre.parentNode.className.match(/highlight-source-(\w+)/);
-      lang = lang ? lang[1] : "";
-
-      var code = pre.querySelector('code');
-      if (code) {
-        code.innerHTML = srcBlock('#+begin_src', '#+end_src', code.innerText, lang);
-      } else {
-        pre.innerHTML = srcBlock('#+begin_src', '#+end_src', pre.innerText, lang);
-      }
-    });
-
     return dom.innerText.trim();
   }
 
@@ -181,8 +180,7 @@
   function srcBlock(start, end, body, header) {
     return `${start} ${header}
 ${body}
-${end}
-`;
+${end}`;
   }
 
   function repeatStar(n) {
