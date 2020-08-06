@@ -74,7 +74,12 @@
         this.protocol = this.unselectedProtocol;
       }
 
-      for(var k in options) this[k] = options[k];
+      for (var k in options) this[k] = options[k];
+
+      if (this.convert2org) {
+        this.selection_text = escapeIt(conv2org(window.getSelection()));
+      }
+
       this.capture();
     }
   }
@@ -86,8 +91,100 @@
 
   function escapeIt(text) {
     return replace_all(replace_all(replace_all(encodeURIComponent(text), "[(]", escape("(")),
-                                   "[)]", escape(")")),
-                       "[']" ,escape("'"));
+      "[)]", escape(")")),
+      "[']", escape("'"));
+  }
+
+  function conv2org(sel) {
+    if (!sel) return "";
+    var dom = document.createElement('div');
+    for (var i = 0; i < sel.rangeCount; i++) {
+      dom.appendChild(sel.getRangeAt(i).cloneContents());
+    }
+
+    dom.querySelectorAll('img').forEach(it => {
+      var url = new URL(it.src, window.location.href).href;
+      it.innerText = `[[${url}]]`;
+    });
+
+    dom.querySelectorAll('blockquote').forEach(it => {
+      it.innerHTML = srcBlock('#+begin_quote', '#+end_quote', it.innerText, "");
+    });
+
+    dom.querySelectorAll('pre').forEach(pre => {
+      var lang = pre.className.match(/lang-(\w+)/) || pre.parentNode.className.match(/highlight-source-(\w+)/);
+      lang = lang ? lang[1] : "";
+
+      var code = pre.querySelector('code');
+      if (code) {
+        code.innerHTML = srcBlock('#+begin_src', '#+end_src', code.innerText, lang);
+      } else {
+        pre.innerHTML = srcBlock('#+begin_src', '#+end_src', pre.innerText, lang);
+      }
+    });
+
+    dom.querySelectorAll('b, strong').forEach(b => {
+      b.innerText = emphasize('*')(b.innerText);
+    });
+    dom.querySelectorAll('i, em').forEach(i => {
+      i.innerText = emphasize('/')(i.innerText);
+    });
+    dom.querySelectorAll('del, s').forEach(s => {
+      s.innerText = emphasize('+')(s.innerText);
+    });
+
+    dom.querySelectorAll('code, kbd').forEach(code => {
+      if (code.parentNode.nodeName != "PRE")
+        code.innerText = emphasize('~')(code.innerText);
+    });
+
+    dom.querySelectorAll('p').forEach(it => {
+      it.innerHTML = `${it.innerText}`;
+    });
+
+    [, 'h1', 'h2', 'h3', 'h4'].forEach((tag, idx) => {
+      dom.querySelectorAll(tag).forEach(it => {
+        var a = it.querySelector('a');
+        if (a && /#(.+)/.test(a.href)) {
+          it.innerHTML = `${repeatStar(idx)} [[${a.href}][${it.innerText}]]`;
+        } else {
+          it.innerHTML = `${repeatStar(idx)} ${it.innerText}`;
+        }
+      });
+    });
+
+    dom.querySelectorAll('a').forEach(it => {
+      if (/\[\[/.test(it.innerText))
+        return;
+      var url = new URL(it.href, window.location.href).href;
+      if (/#(.+)/.test(it.href)) {
+        it.innerText = `[[${url}][${it.innerText}]]`;
+        return;
+      }
+      it.innerText = `[[${url}][${it.alt || it.innerText || ''}]]`;
+    });
+
+    dom.querySelectorAll('ul').forEach(ul => {
+      ul.querySelectorAll('li').forEach(li => {
+        li.innerText = `- ${li.innerText}`;
+      });
+    });
+
+    return dom.innerText.trim();
+  }
+
+  function emphasize(tag) {
+    return text => `${tag}${text}${tag}`;
+  }
+
+  function srcBlock(start, end, body, header) {
+    return `${start} ${header}
+${body}
+${end}`;
+  }
+
+  function repeatStar(n) {
+    return n == 0 ? '' : '*' + repeatStar(n - 1);
   }
 
   function logURI(uri) {

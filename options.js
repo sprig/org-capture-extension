@@ -28,13 +28,15 @@ function save_options() {
     var NewStyleP = document.getElementById('useNewStyle').checked;
     var debugP = document.getElementById('debug').checked;
     var overlayP = document.getElementById('overlay').checked;
+    var orgP = document.getElementById('org').checked;
 
     chrome.storage.sync.set({
         selectedTemplate: selTemp,
         unselectedTemplate: unselTemp,
         useNewStyleLinks: NewStyleP,
         debug: debugP,
-        overlay: overlayP
+        overlay: overlayP,
+        convert2org: orgP,
     }, function() {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
@@ -54,15 +56,17 @@ function restore_options() {
         unselectedTemplate: 'L',
         useNewStyleLinks: true,
         debug: false,
-        overlay: true
+        overlay: true,
+        convert2org: false,
     }, function(options) {
         document.getElementById('unselTemplate').value = options.unselectedTemplate;
         document.getElementById('selTemplate').value = options.selectedTemplate;
         document.getElementById('useNewStyle').checked = options.useNewStyleLinks;
         document.getElementById('debug').checked = options.debug;
         document.getElementById('overlay').checked = options.overlay;
+        document.getElementById('org').checked = options.convert2org;
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click',
-                                                 save_options);
+    save_options);
