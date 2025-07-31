@@ -42,6 +42,9 @@ chrome.runtime.onInstalled.addListener(function (details) {
       });
 });
 
-chrome.browserAction.onClicked.addListener(function (tab) {
-  chrome.tabs.executeScript({file: "capture.js"});
+chrome.action.onClicked.addListener(function (tab) {
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    files: ["capture.js"]
+  });
 });
