@@ -1,27 +1,24 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Org Capture",
-  "version": "0.2.1",
-  "description": "A helper for capturing things via org-protocol in emacs: First, set up: http://orgmode.org/worg/org-contrib/org-protocol.html",
+  "version": "0.3.0",
+  "description": "Capture the current page and selected text in Emacs via org-protocol.",
   "homepage_url": "https://github.com/sprig/org-capture-extension",
 
   "background": {
-    "persistent": false,
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
 
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "scripting"],
 
   "options_ui": {
     "page": "options.html"
   },
 
-  "browser_action": {
-    "default_icon": "org-mode-unicorn.png"
-  },
+  "action": {},
 
   "commands": {
-    "_execute_browser_action": {
+    "_execute_action": {
       "description": "Capture current page with org-capture",
       "suggested_key": {
         "default": "Ctrl+Shift+L",
