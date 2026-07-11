@@ -15,9 +15,7 @@
     "page": "options.html"
   },
 
-  "action": {
-    "default_icon": "org-mode-unicorn.png"
-  },
+  "action": {},
 
   "commands": {
     "_execute_action": {
